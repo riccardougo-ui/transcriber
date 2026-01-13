@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Trascrizione file</title>
+  <style>
+    body { font-family: Arial; }
+    #progressBar { width: 100%; height: 20px; background: #ddd; display: none; }
+    #progress { height: 100%; width: 0%; background: #4CAF50; }
+    #status { margin-top: 10px; font-weight: bold; }
+    button:disabled { opacity: 0.5; }
+  </style>
+</head>
+<body>
+  <h2>Trascrizione file audio/video</h2>
+  <input type="file" id="fileInput"><br><br>
+  <button id="startBtn" onclick="upload()">Trascrivi</button>
+  <div id="status"></div>
+  <div id="progressBar"><div id="progress"></div></div>
+  <pre id="output"></pre>
+
+  <script>
+    function setStatus(t){status.textContent=t}
+    function setProgress(p){progressBar.style.display="block";progress.style.width=p+"%"}
+    async function upload(){
+      const file=fileInput.files[0];
+      if(!file) return;
+      startBtn.disabled=true;
+      setStatus("Upload...");
+      setProgress(20);
+      const fd=new FormData();
+      fd.append("file",file);
+      const r=await fetch("/upload",{method:"POST",body:fd});
+      const blob=await r.blob();
+      setStatus("Completato.");
+      setProgress(100);
+      const a=document.createElement("a");
+      a.href=URL.createObjectURL(blob);
+      a.download=file.name.replace(/\.[^/.]+$/,"")+".txt";
+      a.click();
+      startBtn.disabled=false;
+    }
+  </script>
+</body>
+</html>
