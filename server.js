@@ -49,4 +49,4 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   res.send(transcript);
 });
 
-app.listen(3000, () => console.log("Server avviato"));
+app.listen(process.env.PORT || 3000, () => console.log("Server avviato"));
