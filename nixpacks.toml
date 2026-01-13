@@ -1,0 +1,5 @@
+[pkgs]
+ffmpeg = "*"
+
+[build]
+cmd = "npm install"
