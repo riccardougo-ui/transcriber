@@ -8,6 +8,11 @@ import FormData from "form-data";
 const app = express();
 const upload = multer({ dest: "uploads/" });
 
+// Create uploads directory if it doesn't exist
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
+
 app.use(express.static("public"));
 
 app.post("/upload", upload.single("file"), async (req, res) => {
